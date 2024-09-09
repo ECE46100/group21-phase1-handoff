@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import { install } from "./commands/install";
-import { analyze } from "./commands/analyze";
+import { install } from "../commands/install";
+import { analyze } from "../commands/analyze";
 
 const program = new Command();
 
@@ -21,4 +21,4 @@ program
     .description("Return the security metrics of the package from the provided URL on GitHub.")
     .action(analyze);
 
-program.parse(process.argv);
+export { program };
