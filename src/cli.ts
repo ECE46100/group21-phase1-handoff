@@ -13,7 +13,7 @@ program
 
 program
     .command("install")
-    .description("Installs the depndencies neededto run the CLI.")
+    .description("Installs the dependencies needed to run the CLI.")
     .action(install);
 
 program
