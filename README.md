@@ -1,14 +1,12 @@
 # ECE461_Team_Project
 
-commit by nathan kap
+Currently invoke methods as such:
 
-commit by zack kouba
+Step 1. Compile: npx tsc
 
-commit by Trent Calibo
-
-
-
-
+Step 2. Invoke:
+node dist/cli.js install
+node dist/cli.js sample_url
 
 Trent Calibo
 
