@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import { install } from "../commands/install";
-import { analyze } from "../commands/analyze";
+import { install } from "../commands/install.js";
+import { analyze } from "../commands/analyze.js";
 
 const program = new Command();
 

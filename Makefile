@@ -19,4 +19,5 @@ run:
 # 	jest
 
 # Remove current compiled project files
-clean: rm -rf $(OUT_DIR)
+clean: 
+	rm -rf $(OUT_DIR)
