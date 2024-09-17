@@ -16,7 +16,7 @@ if (!GITHUB_API_TOKEN) {
     process.exit(1);
 }
 
-console.log(`GITHUB_API_TOKEN Loaded: ${GITHUB_API_TOKEN}`);
+// console.log(`GITHUB_API_TOKEN Loaded: ${GITHUB_API_TOKEN}`);
 
 // Call CLI program
 program.parse(process.argv);

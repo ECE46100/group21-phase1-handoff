@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^12.1.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security",
+    "octokit": "^4.0.2"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",

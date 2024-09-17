@@ -29,7 +29,7 @@ export async function getBusFactor(url: string) {
     var commiters = new Map<string, number>();
 
     commits.forEach((commit: any) => {
-        const author = commit.author.login;
+        const author = commit.author ? commit.author.login : null;
         if(!author) {
             return;
         }
