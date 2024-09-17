@@ -1,7 +1,11 @@
 // Main entry point TypeScript file
 import dotenv from 'dotenv';
-import path from 'path';
-import { program } from './utils/cli';
+import path, { dirname } from 'path';
+import { program } from './utils/cli.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
