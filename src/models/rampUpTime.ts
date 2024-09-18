@@ -3,20 +3,11 @@ import * as dotenv from 'dotenv';
 // import fs from 'fs';
 
 dotenv.config();
-
-export async function getRampUpTime(url: string) {
+        auth: process.env.GITHUB_API_TOKEN
+export async function getRampUpTimeGitHub(owner: string, repo: string) {
     const octokit = new Octokit({ 
         auth: process.env.GITHUB_API_TOKEN
     });
-
-    // extract repository name and its owner from the URL
-    const regex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)/;
-    const match = url.match(regex);
-    if (!match) {
-        throw new Error("Invalid URL");
-    }
-    const owner = match[1];
-    const repo = match[2];
 
     // send the GET request for "list contents" API to get the repo size
     const response = await octokit.request("GET /repos/{owner}/{repo}", {
@@ -56,3 +47,15 @@ export async function getRampUpTime(url: string) {
 
     return rampUpTime.toFixed(2);  // return ramp-up time score
 };
+
+export function getRampUpTimeNPM(metadata: any) {
+    const readmeExists = metadata.readme ? true : false;
+    const versionCount = Object.keys(metadata.versions || {}).length;
+    let rampUpTime = versionCount / 10;
+
+    if (readmeExists) {
+        rampUpTime *= 0.8;
+    }
+
+    return rampUpTime.toFixed(3);
+}

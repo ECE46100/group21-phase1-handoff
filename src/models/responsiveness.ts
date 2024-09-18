@@ -2,20 +2,11 @@ import { Octokit } from "octokit";
 import * as dotenv from 'dotenv';
 
 dotenv.config();
-
-export async function getResponsiveness(url: string) {
+        auth: process.env.GITHUB_API_TOKEN
+export async function getResponsivenessGitHub(owner: string, repo: string) {
     const octokit = new Octokit({
         auth: process.env.GITHUB_API_TOKEN
     });
-
-    // Extract repository name and its owner from the URL
-    const regex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)/;
-    const match = url.match(regex);
-    if (!match) {
-        throw new Error("Invalid URL");
-    }
-    const owner = match[1];
-    const repo = match[2];
 
     // Fetch issues for the repository
     const response = await octokit.request("GET /repos/{owner}/{repo}/issues", {
@@ -49,3 +40,12 @@ export async function getResponsiveness(url: string) {
 
     return avgResponseTime.toFixed(2) + " hours";
 };
+
+export function getResponsivenessNPM(metadata: any) {
+    const timeStamps = metadata.time || {};
+    const latestVersionTime = new Date(timeStamps.modified).getTime();
+    const firstPublishedTime = new Date(timeStamps.created).getTime();
+    const responseTime = (latestVersionTime - firstPublishedTime) / (1000 * 60 * 60 * 24);
+
+    return responseTime.toFixed(2); // Days Since First Published
+}

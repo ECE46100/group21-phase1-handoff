@@ -3,19 +3,10 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
         auth: process.env.GITHUB_API_TOKEN
-export async function getBusFactor(url: string) {
+export async function getBusFactorGitHub(owner: string, repo: string) {
     const octokit = new Octokit({ 
         auth: process.env.GITHUB_API_TOKEN
     });
-
-    // extract repository name and its owner from the URL
-    const regex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)/;
-    const match = url.match(regex);
-    if (!match) {
-        throw new Error("Invalid URL");
-    }
-    const owner = match[1];
-    const repo = match[2];
 
     // send the GET request for "list commits" API
     const response = await octokit.request("GET /repos/{owner}/{repo}/commits", {
@@ -50,3 +41,9 @@ export async function getBusFactor(url: string) {
 
     return busFactor.toFixed(3);
 };
+
+export function getBusFactorNPM(metadata: any) {
+    const maintainers = metadata.maintainers || [];
+    const busFactor = 1 / maintainers.length;
+    return busFactor.toFixed(3);
+}
