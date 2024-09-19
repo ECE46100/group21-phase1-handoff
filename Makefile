@@ -5,7 +5,7 @@ ARGS=
 
 all: build run
 test: build professor-tests
-
+	
 # Builds project using TypeScript Compiler into ./dist folder
 build:
 	tsc
@@ -14,6 +14,10 @@ build:
 # Runs project using Node.js
 run:
 	node $(OUT_DIR)/index.js $(ARGS)
+
+# Run tests with Jest on project
+tests: build
+	npm test
 
 # Run tests on project
 professor-tests:
