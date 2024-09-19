@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
         auth: process.env.GITHUB_API_TOKEN
-export async function getBusFactorGitHub(owner: string, repo: string) {
+export async function getBusFactor(owner: string, repo: string) {
     const octokit = new Octokit({ 
         auth: process.env.GITHUB_API_TOKEN
     });
@@ -38,12 +38,9 @@ export async function getBusFactorGitHub(owner: string, repo: string) {
     for (const [author, commits] of commiters.entries()) {
         busFactor += (commits / totalCommits) ** 2;
     };
+    // normalize and ensure that the more contributors - the highter bus factor
+    busFactor = (busFactor - 1 / totalCommits) / (1 - 1 / totalCommits);
+    busFactor = 1 - busFactor;
 
     return busFactor.toFixed(3);
 };
-
-export function getBusFactorNPM(metadata: any) {
-    const maintainers = metadata.maintainers || [];
-    const busFactor = 1 / maintainers.length;
-    return busFactor.toFixed(3);
-}

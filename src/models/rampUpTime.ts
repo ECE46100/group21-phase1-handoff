@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
         auth: process.env.GITHUB_API_TOKEN
-export async function getRampUpTimeGitHub(owner: string, repo: string) {
+export async function getRampUpTime(owner: string, repo: string) {
     const octokit = new Octokit({ 
         auth: process.env.GITHUB_API_TOKEN
     });
@@ -47,15 +47,3 @@ export async function getRampUpTimeGitHub(owner: string, repo: string) {
 
     return rampUpTime.toFixed(2);  // return ramp-up time score
 };
-
-export function getRampUpTimeNPM(metadata: any) {
-    const readmeExists = metadata.readme ? true : false;
-    const versionCount = Object.keys(metadata.versions || {}).length;
-    let rampUpTime = versionCount / 10;
-
-    if (readmeExists) {
-        rampUpTime *= 0.8;
-    }
-
-    return rampUpTime.toFixed(3);
-}

@@ -1,7 +1,14 @@
-import { getBusFactorGitHub, getBusFactorNPM } from "../models/busFactor.js";
-import { getRampUpTimeGitHub, getRampUpTimeNPM } from "../models/rampUpTime.js";
-import { getResponsivenessGitHub, getResponsivenessNPM } from "../models/responsiveness.js";
+import { getBusFactor } from "../models/busFactor.js";
+import { getRampUpTime } from "../models/rampUpTime.js";
+import { getResponsiveness } from "../models/responsiveness.js";
 import fetch from 'node-fetch';
+
+interface repository {
+    url: string;
+}
+interface metadata {
+    repository: repository;
+}
 
 export class URLHandler {
     async handle(url: string) {
@@ -10,7 +17,8 @@ export class URLHandler {
             return await this.GitHubHandler(url);
         } else if (url.includes('npmjs.com')) {
             // NPM URL, Call Fetch Function
-            return await this.NPMHandler(url);
+            const githubUrl = await this.NPMHandler(url);
+            return await this.GitHubHandler(githubUrl);
         } else {
             throw new Error('Unsupported URL. Please provide a GitHub or NPM URL');
         }
@@ -19,9 +27,9 @@ export class URLHandler {
     async GitHubHandler(url: string) {
         const { owner, repo } = this.extractOwnerRepo(url);
         
-        const busFactor = await getBusFactorGitHub(owner, repo);
-        const rampUpTime = await getRampUpTimeGitHub(owner, repo);
-        const responsiveness = await getResponsivenessGitHub(owner, repo);
+        const busFactor = await getBusFactor(owner, repo);
+        const rampUpTime = await getRampUpTime(owner, repo);
+        const responsiveness = await getResponsiveness(owner, repo);
 
         return {
             busFactor,
@@ -33,16 +41,15 @@ export class URLHandler {
     async NPMHandler(url: string) {
         const packageName = this.extractPackageName(url);
         const metadata = await this.getNpmMetadata(packageName);
-
-        const busFactor = getBusFactorNPM(metadata);
-        const rampUpTime = getRampUpTimeNPM(metadata);
-        const responsiveness = getResponsivenessNPM(metadata);
-
-        return {
-            busFactor,
-            rampUpTime,
-            responsiveness,
-        };
+        if(typeof metadata === 'object' && metadata !== null
+             && 'repository' in metadata && typeof metadata.repository === 'object' 
+             && metadata.repository !== null && 'url' in metadata.repository 
+             && typeof metadata.repository.url === 'string') {
+            return (metadata.repository.url).replace(/^git\+/, '').replace(/\.git$/, '').replace('git://', 'https://');
+        }
+        else {
+            throw new Error('No GitHub repository found for the NPM package. Please provide another NPM URL');
+        }
     }
 
     extractOwnerRepo(url: string) {
@@ -70,6 +77,6 @@ export class URLHandler {
         if (!response.ok) {
             throw new Error('Failed to fetch NPM metadata');
         }
-        return await response.json();
+        return await response.json() as metadata;
     }
 }

@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
         auth: process.env.GITHUB_API_TOKEN
-export async function getResponsivenessGitHub(owner: string, repo: string) {
+export async function getResponsiveness(owner: string, repo: string) {
     const octokit = new Octokit({
         auth: process.env.GITHUB_API_TOKEN
     });
@@ -40,12 +40,3 @@ export async function getResponsivenessGitHub(owner: string, repo: string) {
 
     return avgResponseTime.toFixed(2) + " hours";
 };
-
-export function getResponsivenessNPM(metadata: any) {
-    const timeStamps = metadata.time || {};
-    const latestVersionTime = new Date(timeStamps.modified).getTime();
-    const firstPublishedTime = new Date(timeStamps.created).getTime();
-    const responseTime = (latestVersionTime - firstPublishedTime) / (1000 * 60 * 60 * 24);
-
-    return responseTime.toFixed(2); // Days Since First Published
-}
