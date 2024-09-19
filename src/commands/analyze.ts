@@ -1,18 +1,18 @@
-import { getBusFactor } from '../models/busFactor.js';
-import { getRampUpTime } from '../models/rampUpTime.js';
-import { getResponsiveness } from '../models/responsiveness.js';
-import { getCorrectness } from '../models/correctness.js';
+// import { getBusFactor } from '../models/busFactor.js';
+// import { getRampUpTime } from '../models/rampUpTime.js';
+// import { getResponsiveness } from '../models/responsiveness.js';
+// import { getCorrectness } from '../models/correctness.js';
+import { URLHandler } from '../utils/urlHandler.js';
 
 export const analyze = async (packageURL: string) => {
-    console.log(`==================================================\nFetching security metrics for package:\n${packageURL}\n==================================================`);
+    console.log(`==================================================`);
+    console.log(`Fetching security metrics for package:\n${packageURL}`);
+    console.log(`==================================================`);
+    const handler = new URLHandler();
+    const outMetrics = await handler.handle(packageURL)
 
-    const busFactor = await getBusFactor(packageURL);
-    const rampUpTime = await getRampUpTime(packageURL);
-    const responsiveness = await getResponsiveness(packageURL);
-    const correctness = await getCorrectness(packageURL);
-
-    console.log(`Bus Factor: \t\t${busFactor}`);
-    console.log(`Ramp-Up Time: \t\t${rampUpTime}`);
-    console.log(`Responsiveness: \t${responsiveness}`);
-    console.log(`Correctness: \t\t${correctness}`);
+    console.log(`Bus Factor: \t\t${outMetrics.busFactor}`);
+    console.log(`Ramp-Up Time: \t\t${outMetrics.rampUpTime}`);
+    console.log(`Responsiveness: \t${outMetrics.responsiveness}`);
+    console.log(`==================================================\n`);
 };
