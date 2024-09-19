@@ -16,32 +16,6 @@ export async function getResponsiveness(owner: string, repo: string) {
         per_page: 50
     });
 
-    // --- // OLD CODE OLD CODE OLD CODE // --- //
-    // const issues = response.data;
-    // let totalResponseTime = 0;
-    // let issueCount = 0;
-
-    // issues.forEach((issue: any) => {
-    //     if (!issue.created_at || !issue.closed_at) return;  // Skip if no dates are found
-
-    //     const createdAt = new Date(issue.created_at).getTime();
-    //     const closedAt = new Date(issue.closed_at).getTime();
-
-    //     // Calculate time difference in hours
-    //     const responseTimeHours = (closedAt - createdAt) / (1000 * 60 * 60);
-    //     totalResponseTime += responseTimeHours;
-    //     issueCount++;
-    // });
-
-    // if (issueCount === 0) {
-    //     return "No issues found";
-    // }
-
-    // const avgResponseTime = totalResponseTime / issueCount;
-
-    // return avgResponseTime.toFixed(2) + " hours";
-    // --- // OLD CODE OLD CODE OLD CODE // --- //
-
     const issues = response.data.filter((issue: any) => issue.pull_request === undefined);
 
     let totalResponseTime = 0;
