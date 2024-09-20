@@ -1,6 +1,8 @@
 import { getBusFactor } from "../models/busFactor.js";
 import { getRampUpTime } from "../models/rampUpTime.js";
 import { getResponsiveness } from "../models/responsiveness.js";
+import { getLatency } from "../models/latency.js";
+
 import fetch from 'node-fetch';
 
 interface repository {
@@ -27,14 +29,25 @@ export class URLHandler {
     async GitHubHandler(url: string) {
         const { owner, repo } = this.extractOwnerRepo(url);
         
+        let logLatencyStart = performance.now();
         const busFactor = await getBusFactor(owner, repo);
+        const busFactorLatency = await getLatency(logLatencyStart, performance.now());
+
+        logLatencyStart = performance.now();
         const rampUpTime = await getRampUpTime(owner, repo);
+        const rampUpTimeLatency = await getLatency(logLatencyStart, performance.now());
+
+        logLatencyStart = performance.now();
         const responsiveness = await getResponsiveness(owner, repo);
+        const responsivenessLatency = await getLatency(logLatencyStart, performance.now());
 
         return {
             busFactor,
+            busFactorLatency,
             rampUpTime,
+            rampUpTimeLatency,
             responsiveness,
+            responsivenessLatency,
         };
     }
 
