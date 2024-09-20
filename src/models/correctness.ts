@@ -5,7 +5,7 @@ dotenv.config();
 
 export async function getCorrectness(url: string) {
     const octokit = new Octokit({
-        auth: process.env.GITHUB_API_TOKEN
+        auth: process.env.GITHUB_TOKEN
     });
 
     // Extract repository name and its owner from the URL

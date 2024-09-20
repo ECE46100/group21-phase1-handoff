@@ -3,10 +3,10 @@ import * as dotenv from 'dotenv';
 // import fs from 'fs';
 
 dotenv.config();
-        auth: process.env.GITHUB_API_TOKEN
+        auth: process.env.GITHUB_TOKEN
 export async function getRampUpTime(owner: string, repo: string) {
     const octokit = new Octokit({ 
-        auth: process.env.GITHUB_API_TOKEN
+        auth: process.env.GITHUB_TOKEN
     });
 
     // send the GET request for "list contents" API to get the repo size

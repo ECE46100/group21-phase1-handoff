@@ -9,14 +9,14 @@ const __dirname = dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-const GITHUB_API_TOKEN = process.env.GITHUB_API_TOKEN;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-if (!GITHUB_API_TOKEN) {
-    console.error('Error: GITHUB_API_TOKEN is not set in the environment.');
+if (!GITHUB_TOKEN) {
+    console.error('Error: GITHUB_TOKEN is not set in the environment.');
     process.exit(1);
 }
 
-// console.log(`GITHUB_API_TOKEN Loaded: ${GITHUB_API_TOKEN}`);
+// console.log(`GITHUB_TOKEN Loaded: ${GITHUB_TOKEN}`);
 
 // Call CLI program
 program.parse(process.argv);

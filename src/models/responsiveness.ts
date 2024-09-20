@@ -2,10 +2,10 @@ import { Octokit } from "octokit";
 import * as dotenv from 'dotenv';
 
 dotenv.config();
-        auth: process.env.GITHUB_API_TOKEN
+        auth: process.env.GITHUB_TOKEN
 export async function getResponsiveness(owner: string, repo: string) {
     const octokit = new Octokit({
-        auth: process.env.GITHUB_API_TOKEN
+        auth: process.env.GITHUB_TOKEN
     });
 
     // Fetch issues for the repository

@@ -2,10 +2,10 @@ import { Octokit } from "octokit";
 import * as dotenv from 'dotenv';
 
 dotenv.config();
-        auth: process.env.GITHUB_API_TOKEN
+        auth: process.env.GITHUB_TOKEN
 export async function getBusFactor(owner: string, repo: string) {
     const octokit = new Octokit({ 
-        auth: process.env.GITHUB_API_TOKEN
+        auth: process.env.GITHUB_TOKEN
     });
 
     // send the GET request for "list commits" API
