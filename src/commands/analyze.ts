@@ -13,10 +13,10 @@ export const analyze = async (packageURL: string) => {
     const outMetrics = await handler.handle(packageURL)
 
     console.log(`Bus Factor: \t\t${outMetrics.busFactor}`);
-    console.log(`Bus Factor Latency: \t\t${outMetrics.busFactorLatency} ms`);
+    console.log(`Bus Factor Latency: \t\t${outMetrics.busFactorLatency} s`);
     console.log(`Ramp-Up Time: \t\t${outMetrics.rampUpTime}`);
-    console.log(`Ramp-Up Time Latency: \t\t${outMetrics.rampUpTimeLatency} ms`);
+    console.log(`Ramp-Up Time Latency: \t\t${outMetrics.rampUpTimeLatency} s`);
     console.log(`Responsiveness: \t${outMetrics.responsiveness}`);
-    console.log(`Responsiveness Latency: \t${outMetrics.responsivenessLatency} ms`);
+    console.log(`Responsiveness Latency: \t${outMetrics.responsivenessLatency} s`);
     console.log(`==================================================\n`);
 };
