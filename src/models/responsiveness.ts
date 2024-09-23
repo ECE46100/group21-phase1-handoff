@@ -39,9 +39,9 @@ export async function getResponsiveness(owner: string, repo: string) {
     const totalIssues = issues.length;
     const issueResRate = resolvedIssuesCount / totalIssues;
 
-    const responsiveness = 0.4 * (totalResponseTime / totalIssues) +
-                            0.4 * (totalResolutionTime / totalIssues) +
-                            0.2 * issueResRate;
+    const responsiveness = 0.4 * (totalResponseTime / (totalIssues > 0 ? totalIssues : 1)) +
+                            0.4 * (totalResolutionTime / (totalIssues > 0 ? totalIssues : 1)) +
+                            0.2 * (issueResRate > 0 ? issueResRate : 0);
 
     return responsiveness.toFixed(3);
 };

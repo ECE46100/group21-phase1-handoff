@@ -22,12 +22,12 @@ export async function getRepoLicense(owner: string, repo: string): Promise<numbe
     // Check if license is available and valid
     if (response.data.license) {
       const licenseKey = response.data.license.key.toLowerCase();
-      console.log(`License found: ${response.data.license.name}`);
+      // console.log(`License found: ${response.data.license.name}`);
 
       // Treat licenses with 'noassertion' or similar ambiguous values as 'no license'
       const noLicenseKeys = ["noassertion", "unlicense", "other"];
       if (noLicenseKeys.includes(licenseKey)) {
-        console.log(`License "${licenseKey}" treated as no license.`);
+        // console.log(`License "${licenseKey}" treated as no license.`);
         return 0; // No valid license
       }
 
@@ -45,31 +45,31 @@ export async function getRepoLicense(owner: string, repo: string): Promise<numbe
   return 0; // Default return in case of unexpected issues
 }
 
-// Helper function to extract owner and repo from a GitHub package URL
-function extractRepoInfo(packageURL: string): { owner: string; repo: string } | null {
-  const match = packageURL.match(/github\.com\/([^/]+)\/([^/]+)/);
-  if (match) {
-    const owner = match[1];
-    const repo = match[2];
-    return { owner, repo };
-  }
-  return null;
-}
+// // Helper function to extract owner and repo from a GitHub package URL
+// function extractRepoInfo(packageURL: string): { owner: string; repo: string } | null {
+//   const match = packageURL.match(/github\.com\/([^/]+)\/([^/]+)/);
+//   if (match) {
+//     const owner = match[1];
+//     const repo = match[2];
+//     return { owner, repo };
+//   }
+//   return null;
+// }
 
-// Updated analyze function to include license fetching
-export const analyze = async (packageURL: string) => {
-  console.log(`Fetching security metrics for package: ${packageURL}`);
-  console.log(`Fetching license requirements for package: ${packageURL}`);
+// // Updated analyze function to include license fetching
+// export const analyze = async (packageURL: string) => {
+//   console.log(`Fetching security metrics for package: ${packageURL}`);
+//   console.log(`Fetching license requirements for package: ${packageURL}`);
   
-  const repoInfo = extractRepoInfo(packageURL);
+//   const repoInfo = extractRepoInfo(packageURL);
 
-  if (repoInfo) {
-    const { owner, repo } = repoInfo;
-    const licenseStatus = await getRepoLicense(owner, repo);
-    console.log(`License status: ${licenseStatus}`);
-    return licenseStatus; // Return 1 if license exists, 0 if not
-  } else {
-    console.log('Invalid GitHub repository URL.');
-    return 0; // Return 0 if the URL is not a valid GitHub repo URL
-  }
-};
+//   if (repoInfo) {
+//     const { owner, repo } = repoInfo;
+//     const licenseStatus = await getRepoLicense(owner, repo);
+//     console.log(`License status: ${licenseStatus}`);
+//     return licenseStatus; // Return 1 if license exists, 0 if not
+//   } else {
+//     console.log('Invalid GitHub repository URL.');
+//     return 0; // Return 0 if the URL is not a valid GitHub repo URL
+//   }
+// };
