@@ -30,9 +30,9 @@ describe('License', () => {
                 throw new Error('Unsupported URL. Please provide a GitHub or NPM URL');
             }
             if(expected === 'low') {
-                expect(parseFloat(await getRepoLicense(owner, repo))).toEqual(lowScore);
+                expect(await getRepoLicense(owner, repo)).toEqual(lowScore);
             } else if(expected === 'high') {
-                expect(parseFloat(await getRepoLicense(owner, repo))).toEqual(highScore);
+                expect(await getRepoLicense(owner, repo)).toEqual(highScore);
             }
         });
     });

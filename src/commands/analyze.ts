@@ -24,23 +24,26 @@ export const analyze = async (packageURL: string) => {
     // console.log(`License Latency: \t${outMetrics.licenseLatency} s`);
     // console.log(`==================================================\n`);
 
-    const formattedOutput = [
-        { metric: "URL", value: packageURL },
-        { metric: "NetScore", value: outMetrics.netScore },
-        { metric: "NetScore_Latency", value: outMetrics.netScoreLatency },
-        { metric: "RampUp", value: outMetrics.rampUpTime },
-        { metric: "RampUp_Latency", value: outMetrics.rampUpTimeLatency },
-        { metric: "Correctness", value: outMetrics.correctness },
-        { metric: "Correctness_Latency", value: outMetrics.correctnessLatency },
-        { metric: "BusFactor", value: outMetrics.busFactor },
-        { metric: "BusFactor_Latency", value: outMetrics.busFactorLatency },
-        { metric: "ResponsiveMaintainer", value: outMetrics.responsiveness },
-        { metric: "ResponsiveMaintainer_Latency", value: outMetrics.responsivenessLatency },
-        { metric: "License", value: outMetrics.license },
-        { metric: "License_Latency", value: outMetrics.licenseLatency }
-    ];
+    const output = {
+        URL: packageURL,
+        NetScore: parseFloat(outMetrics.netScore),
+        NetScore_Latency: outMetrics.netScoreLatency,
+        RampUp: parseFloat(outMetrics.rampUpTime),
+        RampUp_Latency: outMetrics.rampUpTimeLatency,
+        Correctness: parseFloat(outMetrics.correctness),
+        Correctness_Latency: outMetrics.correctnessLatency,
+        BusFactor: parseFloat(outMetrics.busFactor),
+        BusFactor_Latency: outMetrics.busFactorLatency,
+        ResponsiveMaintainer: parseFloat(outMetrics.responsiveness),
+        ResponsiveMaintainer_Latency: outMetrics.responsivenessLatency,
+        License: outMetrics.license,
+        License_Latency: outMetrics.licenseLatency
+    }
 
-    const ndjsonOutput = formattedOutput.map(metric => JSON.stringify(metric)).join('\n');
+    // const ndjsonOutput = formattedOutput.map(metric => JSON.stringify(metric)).join(',');
+    // console.log(output);
+    const ndjsonOutput = JSON.stringify(output) + '\n';
+    
     console.log(ndjsonOutput);
     // return ndjsonOutput;
 };

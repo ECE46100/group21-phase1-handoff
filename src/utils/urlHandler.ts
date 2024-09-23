@@ -30,7 +30,7 @@ export class URLHandler {
 
     async GitHubHandler(url: string) {
         const { owner, repo } = this.extractOwnerRepo(url);
-        
+        let logLatencyStartNet = performance.now();
         let logLatencyStart = performance.now();
         const busFactor = await getBusFactor(owner, repo);
         const busFactorLatency = await getLatency(logLatencyStart, performance.now());
@@ -51,9 +51,8 @@ export class URLHandler {
         const license = await getRepoLicense(owner, repo);
         const licenseLatency = await getLatency(logLatencyStart, performance.now());
 
-        logLatencyStart = performance.now();
-        const netScore = license * (0.125 * parseFloat(busFactor) + 0.5 * parseFloat(correctness) + 0.125 * parseFloat(rampUpTime) + 0.25 * parseFloat(responsiveness));
-        const netScoreLatency = await getLatency(logLatencyStart, performance.now());
+        const netScore = (license * (0.125 * parseFloat(busFactor) + 0.5 * parseFloat(correctness) + 0.125 * parseFloat(rampUpTime) + 0.25 * parseFloat(responsiveness))).toFixed(3);
+        const netScoreLatency = await getLatency(logLatencyStartNet, performance.now());
 
         return {
             netScore,

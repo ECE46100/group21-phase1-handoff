@@ -13,9 +13,9 @@ build:
 
 # Runs project using Node.js
 run2:
-	node $(OUT_DIR)/index.js $(ARGS)
+	@node $(OUT_DIR)/index.js $(ARGS)
 
-# Run tests with Jest on project
+# Run tests with vitest on project
 tests: build
 	npm test
 
