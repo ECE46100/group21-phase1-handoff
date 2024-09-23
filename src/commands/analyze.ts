@@ -41,7 +41,9 @@ export const analyze = async (packageURL: string) => {
     }
 
     // const ndjsonOutput = formattedOutput.map(metric => JSON.stringify(metric)).join(',');
-    const ndjsonOutput = JSON.stringify(output);
+    // console.log(output);
+    const ndjsonOutput = JSON.stringify(output) + '\n';
+    
     console.log(ndjsonOutput);
     // return ndjsonOutput;
 };
