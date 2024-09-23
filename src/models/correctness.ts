@@ -26,7 +26,7 @@ export async function getCorrectness(url: string) {
 
         const staticScore = Math.max(0, (totalFiles - syntaxErrors) / (totalFiles > 0 ? totalFiles : 1));
         // const dynamicScore = testsPassed ? 1 : 0;
-        console.log(staticScore);
+        // console.log(staticScore);
         // const correctnessScore = (staticScore + dynamicScore) / 2;
         const correctnessScore = staticScore;
 

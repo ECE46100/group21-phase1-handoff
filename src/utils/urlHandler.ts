@@ -3,6 +3,7 @@ import { getRampUpTime } from "../models/rampUpTime.js";
 import { getResponsiveness } from "../models/responsiveness.js";
 import { getLatency } from "../models/latency.js";
 import { getCorrectness } from "../models/correctness.js";
+import { getRepoLicense } from "../models/license.js";
 
 import fetch from 'node-fetch';
 
@@ -46,6 +47,10 @@ export class URLHandler {
         const correctness = await getCorrectness(url);
         const correctnessLatency = await getLatency(logLatencyStart, performance.now());
 
+        logLatencyStart = performance.now();
+        const license = await getRepoLicense(owner, repo);
+        const licenseLatency = await getLatency(logLatencyStart, performance.now());
+
         return {
             busFactor,
             busFactorLatency,
@@ -54,7 +59,9 @@ export class URLHandler {
             responsiveness,
             responsivenessLatency,
             correctness,
-            correctnessLatency
+            correctnessLatency,
+            license,
+            licenseLatency
         };
     }
 

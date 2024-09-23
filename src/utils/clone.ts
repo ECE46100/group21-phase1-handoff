@@ -15,14 +15,14 @@ export async function cloneRepo(url: string, dir: string) {
         url,
         depth: 1,
     });
-    console.log(`Cloned ${url} to ${dir}`);
+    // console.log(`Cloned ${url} to ${dir}`);
 }
 
 export async function deleteRepo(dir: string) {
     try {
         if (fs.existsSync(dir)) {
             fs.rmSync(dir, { recursive: true, force: true });
-            console.log(`Deleted ${dir}`);
+            // console.log(`Deleted ${dir}`);
         }
     } catch (err) {
         if (err instanceof Error) {
