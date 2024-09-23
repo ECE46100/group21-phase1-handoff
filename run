@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$1" == "install" ]; then
+    echo "Installing dependencies..."
+    npm install
+
+    make build
+
+    echo "Installation complete."
+elif [ "$1" == "tests" ]; then
+    echo "Running the application..."
+    make tests
+else
+    make run2 ARGS="$1"
+fi
+
+exit 0
