@@ -10,7 +10,7 @@ const urls = [
     {url: "https://www.npmjs.com/package/wat4hjs", expected: 'low'},
     {url: "https://github.com/mrdoob/three.js/", expected: 'high'},
     {url: "https://www.npmjs.com/package/socket.io", expected: 'medium'},
-    {url: "https://github.com/prathameshnetake/libvlc", expected: 'low'},
+    {url: "https://github.com/prathameshnetake/libvlc", expected: 'high'},
     {url: "https://www.npmjs.com/package/react", expected: 'high'},
     {url: "https://www.npmjs.com/package/unlicensed", expected: 'low'}]
 
