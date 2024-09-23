@@ -3,7 +3,9 @@
 // import { getResponsiveness } from '../models/responsiveness.js';
 // import { getCorrectness } from '../models/correctness.js';
 
+import { logMessage } from '../utils/logging.js';
 import { URLHandler } from '../utils/urlHandler.js';
+import * as dotenv from 'dotenv';
 
 export const analyze = async (packageURL: string) => {
     console.log(`==================================================`);
@@ -19,4 +21,9 @@ export const analyze = async (packageURL: string) => {
     console.log(`Responsiveness: \t${outMetrics.responsiveness}`);
     console.log(`Responsiveness Latency: \t${outMetrics.responsivenessLatency} s`);
     console.log(`==================================================\n`);
+
+    parseInt(process.env.LOG_LEVEL || '0', 10) && console.log(`Logging information into '${process.env.LOG_FILE}'...\n`);
+    await logMessage(outMetrics, packageURL);
+
+
 };
