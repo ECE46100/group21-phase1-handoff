@@ -18,5 +18,7 @@ export const analyze = async (packageURL: string) => {
     console.log(`Ramp-Up Time Latency: \t\t${outMetrics.rampUpTimeLatency} s`);
     console.log(`Responsiveness: \t${outMetrics.responsiveness}`);
     console.log(`Responsiveness Latency: \t${outMetrics.responsivenessLatency} s`);
+    console.log(`Correctness: \t${outMetrics.correctness}`);
+    console.log(`Correctness Latency: \t${outMetrics.correctnessLatency} s`);
     console.log(`==================================================\n`);
 };

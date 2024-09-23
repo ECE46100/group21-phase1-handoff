@@ -1,8 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as git from 'isomorphic-git';
-import http from 'isomorphic-git/http/node';
-
+import http from 'isomorphic-git/http/node/index.js';
 // const repoDir = path.join(__dirname, '..', '..', 'repo');
 // if (!fs.existsSync(repoDir)) {
 //     fs.mkdirSync(repoDir);
