@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ "$1" == "install" ]; then
+    echo "Installing dependencies..."
+    pip install -r requirements.txt
+    echo "Dependencies installed."
+elif [ "$1" == "tests" ]; then
+    echo "Running the application..."
+    make tests
+else
+    echo "Invalid argument. Please use 'install' or 'run'."
+fi
+
+exit 0
