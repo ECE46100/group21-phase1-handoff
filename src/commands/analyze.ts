@@ -23,10 +23,11 @@ export const analyze = async (packageURL: string) => {
     // console.log(`License: \t${outMetrics.license}`);
     // console.log(`License Latency: \t${outMetrics.licenseLatency} s`);
     // console.log(`==================================================\n`);
+
     const formattedOutput = [
         { metric: "URL", value: packageURL },
-        { metric: "NetScore", value: 0 },
-        { metric: "NetScore_Latency", value: 0 },
+        { metric: "NetScore", value: outMetrics.netScore },
+        { metric: "NetScore_Latency", value: outMetrics.netScoreLatency },
         { metric: "RampUp", value: outMetrics.rampUpTime },
         { metric: "RampUp_Latency", value: outMetrics.rampUpTimeLatency },
         { metric: "Correctness", value: outMetrics.correctness },

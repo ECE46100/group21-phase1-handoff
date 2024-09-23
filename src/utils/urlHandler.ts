@@ -51,7 +51,13 @@ export class URLHandler {
         const license = await getRepoLicense(owner, repo);
         const licenseLatency = await getLatency(logLatencyStart, performance.now());
 
+        logLatencyStart = performance.now();
+        const netScore = license * (0.125 * parseFloat(busFactor) + 0.5 * parseFloat(correctness) + 0.125 * parseFloat(rampUpTime) + 0.25 * parseFloat(responsiveness));
+        const netScoreLatency = await getLatency(logLatencyStart, performance.now());
+
         return {
+            netScore,
+            netScoreLatency,
             busFactor,
             busFactorLatency,
             rampUpTime,

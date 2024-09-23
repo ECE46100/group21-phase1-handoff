@@ -30,7 +30,7 @@ export async function getCorrectness(url: string) {
         // const correctnessScore = (staticScore + dynamicScore) / 2;
         const correctnessScore = staticScore;
 
-        return correctnessScore;
+        return correctnessScore.toFixed(3);
     } finally {
         await deleteRepo(repoDir);
     }
