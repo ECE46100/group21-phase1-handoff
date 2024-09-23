@@ -7,12 +7,29 @@ import { cloneRepo, deleteRepo } from '../utils/clone';
 
 dotenv.config();
 const repoDir = path.join(__dirname, '..', '..', 'repo');
+if (!fs.existsSync(repoDir)) {
+    fs.mkdirSync(repoDir);
+}
 
 export async function getCorrectness(url: string) {
-    await cloneRepo(url, 'repo');
+    await cloneRepo(url, repoDir);
+
+    try {
+        const { totalFiles, syntaxErrors } = await analyzeFiles(repoDir);
+        const testsPassed = await runTests(repoDir);
+
+        const staticScore = Math.max(0, (totalFiles - syntaxErrors) / totalFiles);
+        const dynamicScore = testsPassed ? 1 : 0;
+
+        const correctnessScore = (staticScore + dynamicScore) / 2;
+
+        return correctnessScore;
+    } finally {
+        await deleteRepo(repoDir);
+    }
 };
 
-async function analyzeFiles(dir: string): Promise<number> {
+async function analyzeFiles(dir: string): Promise<{ totalFiles: number, syntaxErrors:number }> {
     const jsFiles = fs.readdirSync(dir).filter(file => file.endsWith('.js'));
     let syntaxErrors = 0;
 
@@ -33,7 +50,7 @@ async function analyzeFiles(dir: string): Promise<number> {
         }
     });
 
-    return syntaxErrors;
+    return { totalFiles: jsFiles.length, syntaxErrors };
 }
 
 function runTests(dir: string): Promise<boolean> {

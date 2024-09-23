@@ -3,10 +3,10 @@ import * as path from 'path';
 import * as git from 'isomorphic-git';
 import http from 'isomorphic-git/http/node';
 
-const repoDir = path.join(__dirname, '..', '..', 'repo');
-if (!fs.existsSync(repoDir)) {
-    fs.mkdirSync(repoDir);
-}
+// const repoDir = path.join(__dirname, '..', '..', 'repo');
+// if (!fs.existsSync(repoDir)) {
+//     fs.mkdirSync(repoDir);
+// }
 
 export async function cloneRepo(url: string, dir: string) {
     await git.clone({
