@@ -4,3 +4,5 @@ node_modules/
 dist/
 logfile.log
 .gitignore
+coverage.json
+test_out.json

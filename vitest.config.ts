@@ -1,10 +1,16 @@
-import { defineConfig } from 'vitest/config';
+import { coverageConfigDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    reporters: ['dot'],
+    reporters: ['json'],
+    outputFile: './test_out.json',
     coverage: {
-      reporter: ['text'],
+      provider: 'istanbul',
+      include: ['src/**/*.ts'],
+      exclude: ['src/**/logging.ts', 'src/index.ts'],
+      reportsDirectory: './coverage',
+      reporter: 'text',
+      reportOnFailure: true,
     },
     environment: 'node',
     globals: true,
