@@ -8,13 +8,15 @@ import http from 'isomorphic-git/http/node/index.js';
 // }
 
 export async function cloneRepo(url: string, dir: string) {
-    await git.clone({
-        fs,
-        http,
-        dir,
-        url,
-        depth: 1,
-    });
+    if(!fs.existsSync(dir)) {
+        await git.clone({
+            fs,
+            http,
+            dir,
+            url,
+            depth: 1,
+        });
+    }
     // console.log(`Cloned ${url} to ${dir}`);
 }
 
