@@ -40,11 +40,11 @@ export async function logMessage(metrics: Metric, packageURL: string) { // expec
     message = `Starting analysis for package: ${packageURL}\n` + message;
     fs.appendFile(logFile, message, (err) => {
         if (err) {
-            console.error('Error writing to file:', err);
-            console.log(`==================================================\n`);
+            // console.error('Error writing to file:', err);
+            // console.log(`==================================================\n`);
         } else {
-            console.log('Log entry successfully written to logfile.log.\n')
-            console.log(`==================================================\n`);
+            // console.log('Log entry successfully written to logfile.log.\n')
+            // console.log(`==================================================\n`);
         }
     }); 
 }

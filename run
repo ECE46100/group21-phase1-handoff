@@ -13,10 +13,8 @@ elif [ "$1" == "tests" ]; then
 else
     while IFS= read -r URL; do
         if [[ -n "$URL" ]]; then
-            make run2 ARGS="$URL"
-            # node dist/index.js "$URL"
+            # make run2 ARGS="$URL"
+            node dist/index.js "$URL"
         fi
     done < "$1"
 fi
-
-exit 0

@@ -21,7 +21,8 @@ export const analyze = async (packageURL: string) => {
 //     console.log(`Responsiveness: \t${outMetrics.responsiveness}`);
 //     console.log(`Responsiveness Latency: \t${outMetrics.responsivenessLatency} s`);
 
-    parseInt(process.env.LOG_LEVEL || '0', 10) && console.log(`Logging information into '${process.env.LOG_FILE}'...\n`);
+    parseInt(process.env.LOG_LEVEL || '0', 10)
+    // console.log(`Logging information into '${process.env.LOG_FILE}'...\n`);
     await logMessage(outMetrics, packageURL);
 
     // console.log(`Bus Factor: \t\t${outMetrics.busFactor}`);
