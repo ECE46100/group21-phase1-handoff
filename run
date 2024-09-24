@@ -7,7 +7,7 @@ if [ "$1" == "install" ]; then
     make build
 
     echo "Installation complete."
-elif [ "$1" == "tests" ]; then
+elif [ "$1" == "test" ]; then
     echo "Running the application..."
     make tests
 else

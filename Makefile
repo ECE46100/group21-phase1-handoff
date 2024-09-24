@@ -17,7 +17,7 @@ run2:
 
 # Run tests with vitest on project
 tests: build
-	npm test
+	npm test || [ $$? -eq 1 ] || exit 1
 
 # Run tests on project
 professor-tests:
