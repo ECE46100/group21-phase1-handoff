@@ -1,6 +1,7 @@
 // Test TypeScript file
 import { describe, test, expect } from 'vitest';
 import { URLHandler } from '../src/utils/urlHandler';
+import { getRepoLicense } from '../src/models/license';
 
 const lowScore = 0;
 const highScore = 1;
@@ -29,9 +30,9 @@ describe('License', () => {
                 throw new Error('Unsupported URL. Please provide a GitHub or NPM URL');
             }
             if(expected === 'low') {
-                expect(parseFloat(await getLicense(owner, repo))).toBeEqual(lowScore);
+                expect(await getRepoLicense(owner, repo)).toEqual(lowScore);
             } else if(expected === 'high') {
-                expect(parseFloat(await getLicense(owner, repo))).toBeEqual(highScore);
+                expect(await getRepoLicense(owner, repo)).toEqual(highScore);
             }
         });
     });

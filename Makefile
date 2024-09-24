@@ -12,10 +12,10 @@ build:
 #	tsc --project tsconfig.json
 
 # Runs project using Node.js
-run:
-	node $(OUT_DIR)/index.js $(ARGS)
+run2:
+	@node $(OUT_DIR)/index.js $(ARGS)
 
-# Run tests with Jest on project
+# Run tests with vitest on project
 tests: build
 	npm test
 

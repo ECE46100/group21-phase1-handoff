@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$1" == "install" ]; then
+    echo "Installing dependencies..."
+    npm install
+
+    make build
+
+    echo "Installation complete."
+elif [ "$1" == "tests" ]; then
+    echo "Running the application..."
+    make tests
+else
+    while IFS= read -r URL; do
+        if [[ -n "$URL" ]]; then
+            make run2 ARGS="$URL"
+            # node dist/index.js "$URL"
+        fi
+    done < "$1"
+fi
+
+exit 0
