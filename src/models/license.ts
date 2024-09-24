@@ -36,9 +36,9 @@ export async function getRepoLicense(owner: string, repo: string): Promise<numbe
   } catch (error) {
     if (error instanceof Error) {
       // Specific handling for Error objects
-      console.error('Error fetching license:', error.message);
+      // console.error('Error fetching license:', error.message);
     } else {
-      console.error('An unknown error occurred.', error);
+      // console.error('An unknown error occurred.', error);
     }
   }
 

@@ -8,7 +8,7 @@ if [ "$1" == "install" ]; then
 
     echo "Installation complete."
 elif [ "$1" == "test" ]; then
-    echo "Running the application..."
+    # echo "Running the application..."
     make tests
 else
     while IFS= read -r URL; do
