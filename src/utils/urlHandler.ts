@@ -77,7 +77,17 @@ export class URLHandler {
              && 'repository' in metadata && typeof metadata.repository === 'object' 
              && metadata.repository !== null && 'url' in metadata.repository 
              && typeof metadata.repository.url === 'string') {
-            return (metadata.repository.url).replace(/^git\+/, '').replace(/\.git$/, '').replace('git://', 'https://');
+            
+            let repoUrl = (metadata.repository.url).replace(/^git\+/, '').replace(/\.git$/, '').replace('git://', 'https://');
+
+            if (repoUrl.startsWith('ssh://git@github.com:')) {
+                repoUrl = repoUrl.replace('ssh://git@github.com:', 'https://github.com/');
+            } else if (repoUrl.startsWith('ssh://git@github.com/')) {
+                repoUrl = repoUrl.replace('ssh://git@github.com/', 'https://github.com/');
+            }
+            
+            return repoUrl
+            // return (metadata.repository.url).replace(/^git\+/, '').replace(/\.git$/, '').replace('git://', 'https://');
         }
         else {
             throw new Error('No GitHub repository found for the NPM package. Please provide another NPM URL');

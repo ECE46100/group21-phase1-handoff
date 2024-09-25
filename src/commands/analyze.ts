@@ -55,7 +55,7 @@ export const analyze = async (packageURL: string) => {
 
     // const ndjsonOutput = formattedOutput.map(metric => JSON.stringify(metric)).join(',');
     // console.log(output);
-    const ndjsonOutput = JSON.stringify(output) + '\n';
+    const ndjsonOutput = JSON.stringify(output);
     
     console.log(ndjsonOutput);
     // return ndjsonOutput;
