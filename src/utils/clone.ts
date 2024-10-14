@@ -1,30 +1,31 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as git from 'isomorphic-git';
-import http from 'isomorphic-git/http/node/index.js';
+import { simpleGit } from 'simple-git';
 // const repoDir = path.join(__dirname, '..', '..', 'repo');
 // if (!fs.existsSync(repoDir)) {
 //     fs.mkdirSync(repoDir);
 // }
 
 export async function cloneRepo(url: string, dir: string) {
-    if(!fs.existsSync(dir)) {
-        await git.clone({
-            fs,
-            http,
-            dir,
-            url,
-            depth: 1,
-        });
-    }
-    // console.log(`Cloned ${url} to ${dir}`);
+    // TODO: Both versions super flow for big repos - need to figure out why ours is faster
+    // await clone({
+    //     fs,
+    //     http,
+    //     dir: dir,
+    //     url: url,
+    //     depth: 1,
+    // });
+    await simpleGit().clone(
+        url,
+        dir,
+        ["--depth", "1"]
+    );
 }
 
 export async function deleteRepo(dir: string) {
     try {
         if (fs.existsSync(dir)) {
             fs.rmSync(dir, { recursive: true, force: true });
-            // console.log(`Deleted ${dir}`);
         }
     } catch (err) {
         if (err instanceof Error) {

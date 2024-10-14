@@ -18,58 +18,43 @@ export async function getRepoLicense(owner: string, repo: string): Promise<numbe
         'X-GitHub-Api-Version': '2022-11-28'
       }
     });
-
+    if (repo === 'libvlc') {
+      console.log(response);
+    } 
     // Check if license is available and valid
-    if (response.data.license) {
-      const licenseKey = response.data.license.key.toLowerCase();
-      // console.log(`License found: ${response.data.license.name}`);
-
-      // Treat licenses with 'noassertion' or similar ambiguous values as 'no license'
-      const noLicenseKeys = ["noassertion", "unlicense", "other"];
-      if (noLicenseKeys.includes(licenseKey)) {
-        // console.log(`License "${licenseKey}" treated as no license.`);
-        return 0; // No valid license
-      }
-
-      return 1; // Valid license found
+    if (response.data.license?.spdx_id == 'LGPL-2.1' || response.data.license?.spdx_id == 'LGPL-2.1-only' || response.data.license?.spdx_id == 'MIT') {
+      return 1;
+    } else {
+      return licenseHelper(owner, repo);
     }
   } catch (error) {
-    if (error instanceof Error) {
-      // Specific handling for Error objects
-      // console.error('Error fetching license:', error.message);
-    } else {
-      // console.error('An unknown error occurred.', error);
-    }
+    return licenseHelper(owner, repo);
   }
-
-  return 0; // Default return in case of unexpected issues
 }
 
-// // Helper function to extract owner and repo from a GitHub package URL
-// function extractRepoInfo(packageURL: string): { owner: string; repo: string } | null {
-//   const match = packageURL.match(/github\.com\/([^/]+)\/([^/]+)/);
-//   if (match) {
-//     const owner = match[1];
-//     const repo = match[2];
-//     return { owner, repo };
-//   }
-//   return null;
-// }
-
-// // Updated analyze function to include license fetching
-// export const analyze = async (packageURL: string) => {
-//   console.log(`Fetching security metrics for package: ${packageURL}`);
-//   console.log(`Fetching license requirements for package: ${packageURL}`);
-  
-//   const repoInfo = extractRepoInfo(packageURL);
-
-//   if (repoInfo) {
-//     const { owner, repo } = repoInfo;
-//     const licenseStatus = await getRepoLicense(owner, repo);
-//     console.log(`License status: ${licenseStatus}`);
-//     return licenseStatus; // Return 1 if license exists, 0 if not
-//   } else {
-//     console.log('Invalid GitHub repository URL.');
-//     return 0; // Return 0 if the URL is not a valid GitHub repo URL
-//   }
-// };
+async function licenseHelper(owner: string, repo: string): Promise<number> {
+  // use github api to get package.json, license.md, and readme.md
+  const possibleLocations = ['package.json', 'LICENSE.md', 'README.md'];
+  for (const location of possibleLocations) {
+    const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{location}', {
+      owner: owner,
+      repo: repo,
+      location: location,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    const result = Buffer.from(response.data.content, 'base64').toString();
+    if (location === 'package.json') {
+      const json_result = JSON.parse(result);
+      if (json_result.license == "MIT" || json_result.license == "LGPL-2.1" || json_result.license == "LGPL-2.1-only") {
+        return 1;
+      }
+    } else {
+      if (result.includes("MIT License") || result.includes("LGPL-2.1") || result.includes("LGPL-2.1-only")) {
+        return 1;
+      }
+    }
+  }
+  return 0;
+}
