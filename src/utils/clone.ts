@@ -1,13 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { simpleGit } from 'simple-git';
-// const repoDir = path.join(__dirname, '..', '..', 'repo');
-// if (!fs.existsSync(repoDir)) {
-//     fs.mkdirSync(repoDir);
-// }
 
 export async function cloneRepo(url: string, dir: string) {
-    // TODO: Both versions super flow for big repos - need to figure out why ours is faster
+    // TODO: Both versions super slow for big repos - need to figure out why ours is faster
     // await clone({
     //     fs,
     //     http,

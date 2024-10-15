@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
-import { cloneRepo, deleteRepo } from '../utils/clone.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { ESLint } from 'eslint';
@@ -14,16 +13,15 @@ if (!fs.existsSync(repoDir)) {
     fs.mkdirSync(repoDir);
 }
 
-export async function getCorrectness(url: string) {
-    await cloneRepo(url, repoDir);
+export async function getCorrectness(): Promise<string> {
     try {
         const { totalFiles, syntaxErrors } = await analyzeFiles(repoDir);
         const staticScore = Math.max(0, 1 - (syntaxErrors / totalFiles / 10));
         const correctnessScore = staticScore;
 
         return correctnessScore.toFixed(3);
-    } finally {
-        await deleteRepo(repoDir);
+    } catch {
+        return '-1';
     }
 };
 
