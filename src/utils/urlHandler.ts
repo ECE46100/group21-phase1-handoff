@@ -5,6 +5,7 @@ import { getLatency } from "../models/latency.js";
 import { getCorrectness } from "../models/correctness.js";
 import { getRepoLicense } from "../models/license.js";
 import { getReviewedMerge } from "../models/reviewedMerge.js";
+import { getPinnedDependencies } from "../models/pinnedDependencies.js"
 
 import fetch from 'node-fetch';
 
@@ -56,6 +57,10 @@ export class URLHandler {
         const reviewedMerge = await getReviewedMerge(owner, repo);
         const reviewedMergeLatency = await getLatency(logLatencyStart, performance.now());
 
+        logLatencyStart = performance.now();
+        const pinnedDependencies = await getPinnedDependencies(owner, repo);
+        const pinnedDependenciesLatency = await getLatency(logLatencyStart, performance.now());
+
         const netScore = (license * (0.125 * parseFloat(busFactor) + 0.5 * parseFloat(correctness) + 0.125 * parseFloat(rampUpTime) + 0.25 * parseFloat(responsiveness))).toFixed(3);
         const netScoreLatency = await getLatency(logLatencyStartNet, performance.now());
 
@@ -74,6 +79,8 @@ export class URLHandler {
             licenseLatency,
             reviewedMerge,
             reviewedMergeLatency,
+            pinnedDependencies,
+            pinnedDependenciesLatency,
         };
     }
 

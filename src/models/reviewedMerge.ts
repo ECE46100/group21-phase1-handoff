@@ -1,60 +1,63 @@
 import { Octokit } from "octokit";
+import type { GraphQlQueryResponseData } from "@octokit/graphql"; 
+/* The default type of a graphQL response. We'd get TS errors if not used  */
+
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-/**
- * Calculate the fraction of merged pull requests that have been reviewed.
- * @param owner - GitHub owner or organization name.
- * @param repo - GitHub repository name.
- * @returns The fraction of merged pull requests that have at least one code review.
- */
-export async function getReviewedMergeFraction(owner: string, repo: string): Promise<number> {
-    const octokit = new Octokit({ 
-        auth: process.env.GITHUB_TOKEN 
-    });
+const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN
+});
 
+export async function getReviewedMerge(owner: string, repo: string): Promise<string> {
     let reviewedCount = 0;
     let totalMergedPRs = 0;
-    let page = 1;
-    const perPage = 100;  // GitHub's max allowed per page
+    let hasNextPage = true;
+    let endCursor: string | null = null;
 
-    while (true) {
-        const prResponse = await octokit.request('GET /repos/{owner}/{repo}/pulls', {
+    while (hasNextPage) {
+        /* fetch merged PRs & reviews via graphQL */
+        const response: GraphQlQueryResponseData = await octokit.graphql({
+            query: `
+                query ($owner: String!, $repo: String!, $endCursor: String) {
+                    repository(owner: $owner, name: $repo) {
+                        pullRequests(first: 100, after: $endCursor, states: MERGED) {
+                            pageInfo {
+                                hasNextPage
+                                endCursor
+                            }
+                            nodes {
+                                mergedAt
+                                reviews(first: 1) {
+                                    totalCount
+                                }
+                            }
+                        }
+                    }
+                }
+            `,
             owner,
             repo,
-            state: 'closed',
-            per_page: perPage,
-            page: page
+            endCursor
         });
 
-        const mergedPRs = prResponse.data.filter(pr => pr.merged_at !== null);
-        
-        // If no more merged PRs, break the loop
-        if (mergedPRs.length === 0) break;
+        const pullRequests = response.repository.pullRequests.nodes;
 
-        // Process each merged PR to check for reviews
-        for (const pr of mergedPRs) {
+        /* count reviewed and total merged PRs */
+        for (const pr of pullRequests) {
             totalMergedPRs++;
-
-            // Fetch reviews for the PR
-            const reviewsResponse = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews', {
-                owner,
-                repo,
-                pull_number: pr.number
-            });
-
-            // If there is at least one review, count it as reviewed
-            if (reviewsResponse.data.length > 0) {
+            if (pr.reviews.totalCount > 0) {
                 reviewedCount++;
             }
         }
 
-        // Move to the next page of pull requests
-        page++;
+        /* update end condition */
+        hasNextPage = response.repository.pullRequests.pageInfo.hasNextPage;
+        endCursor = response.repository.pullRequests.pageInfo.endCursor;
     }
 
-    // Calculate the fraction of reviewed merges
+    /* calculate the fraction of reviewed merges */
     const fractionReviewed = totalMergedPRs > 0 ? reviewedCount / totalMergedPRs : 0;
-    return parseFloat(fractionReviewed.toFixed(3));
-};
+    return fractionReviewed.toFixed(3);
+}
