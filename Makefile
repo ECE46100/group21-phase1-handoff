@@ -8,7 +8,7 @@ test: build professor-tests
 	
 # Builds project using TypeScript Compiler into ./dist folder
 build:
-	tsc
+	npx tsc
 #	tsc --project tsconfig.json
 
 # Runs project using Node.js

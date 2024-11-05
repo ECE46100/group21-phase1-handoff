@@ -4,7 +4,10 @@ import { getResponsiveness } from "../models/responsiveness.js";
 import { getLatency } from "../models/latency.js";
 import { getCorrectness } from "../models/correctness.js";
 import { getRepoLicense } from "../models/license.js";
-import { getReviewedMerge } from "../models/reviewedMerge.js";
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { existsSync, mkdirSync } from "fs";
+import { cloneRepo, deleteRepo } from '../utils/clone.js';import { getReviewedMerge } from "../models/reviewedMerge.js";
 import { getPinnedDependencies } from "../models/pinnedDependencies.js"
 
 import fetch from 'node-fetch';
@@ -14,6 +17,13 @@ interface repository {
 }
 interface metadata {
     repository: repository;
+}
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const repoDir = join(__dirname, '..', '..', 'repo');
+if (!existsSync(repoDir)) {
+    mkdirSync(repoDir);
 }
 
 export class URLHandler {
@@ -32,6 +42,7 @@ export class URLHandler {
 
     async GitHubHandler(url: string) {
         const { owner, repo } = this.extractOwnerRepo(url);
+        await cloneRepo(url, join(__dirname, '..', '..', 'repo'));
         let logLatencyStartNet = performance.now();
         let logLatencyStart = performance.now();
         const busFactor = await getBusFactor(owner, repo);
@@ -46,7 +57,7 @@ export class URLHandler {
         const responsivenessLatency = await getLatency(logLatencyStart, performance.now());
 
         logLatencyStart = performance.now();
-        const correctness = await getCorrectness(url);
+        const correctness = await getCorrectness();
         const correctnessLatency = await getLatency(logLatencyStart, performance.now());
 
         logLatencyStart = performance.now();
@@ -64,6 +75,7 @@ export class URLHandler {
         const netScore = (license * (0.125 * parseFloat(busFactor) + 0.5 * parseFloat(correctness) + 0.125 * parseFloat(rampUpTime) + 0.25 * parseFloat(responsiveness))).toFixed(3);
         const netScoreLatency = await getLatency(logLatencyStartNet, performance.now());
 
+        deleteRepo(join(__dirname, '..', '..', 'repo'));
         return {
             netScore,
             netScoreLatency,
