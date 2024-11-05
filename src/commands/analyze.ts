@@ -49,6 +49,10 @@ export const analyze = async (packageURL: string) => {
         BusFactor_Latency: outMetrics.busFactorLatency,
         ResponsiveMaintainer: parseFloat(outMetrics.responsiveness),
         ResponsiveMaintainer_Latency: outMetrics.responsivenessLatency,
+        ReviewedMerge: parseFloat(outMetrics.reviewedMerge),
+        ReviewedMerge_Latency: outMetrics.reviewedMergeLatency,
+        PinnedDependencies: parseFloat(outMetrics.pinnedDependencies),
+        PinnedDependencies_Latency: outMetrics.pinnedDependenciesLatency,
         License: outMetrics.license,
         License_Latency: outMetrics.licenseLatency
     }
