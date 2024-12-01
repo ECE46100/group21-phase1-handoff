@@ -18,9 +18,6 @@ export async function getRepoLicense(owner: string, repo: string): Promise<numbe
         'X-GitHub-Api-Version': '2022-11-28'
       }
     });
-    if (repo === 'libvlc') {
-      console.log(response);
-    } 
     // Check if license is available and valid
     if (response.data.license?.spdx_id == 'LGPL-2.1' || response.data.license?.spdx_id == 'LGPL-2.1-only' || response.data.license?.spdx_id == 'MIT') {
       return 1;
