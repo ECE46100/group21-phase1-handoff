@@ -6,3 +6,4 @@ logfile.log
 .gitignore
 coverage.json
 test_out.json
+package-lock.json
