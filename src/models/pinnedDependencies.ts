@@ -1,6 +1,7 @@
 import { Octokit } from "octokit";
 import * as dotenv from 'dotenv';
 import { error } from "console";
+import semver from "semver";
 
 dotenv.config();
 
@@ -8,6 +9,26 @@ const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN
 });
 
+function isPinnedToMajorMinor(versionRange: string) {
+  // Split by '||' for disjunctive ranges
+  const ranges = versionRange.split('||').map(range => range.trim());
+  // check if the min versions match across ranges
+  const minVersions = ranges.map(range => [semver.minVersion(range)?.major, semver.minVersion(range)?.minor]);
+  if (minVersions.some(minVersion => minVersion !== minVersions[0])) return false;
+
+  return ranges.every(range => {
+    const minVersion = semver.minVersion(range);
+    if (!minVersion) return false;
+
+    const major = minVersion.major;
+    const minor = minVersion.minor;
+    const patch = minVersion.patch;
+    
+    const incrMinor = `${major}.${minor + 1}.${patch}`;
+    const incrMajor = `${major + 1}.${minor}.${patch}`;
+    return !(semver.satisfies(incrMinor, range) || semver.satisfies(incrMajor, range));
+  });
+}
 
 export async function getPinnedDependencies(owner: string, repo: string): Promise<string> {
     try {
@@ -31,11 +52,7 @@ export async function getPinnedDependencies(owner: string, repo: string): Promis
         for (const version of Object.values(dependencies)) {
             totalDependencies++;
             // console.log(version);
-            if (typeof version==="string" && /^\d+\.\d+(\.x|\.\*)?$|^\d+\.\d+\.\d+$/.test(version)){
-                /* 
-                    checks for example : "2.3.3" || "2.3.*" || "2.3.x" 
-                    the followings do not count : "2.x" || "^2.3.4" || "~2.3.4" 
-                */
+            if (typeof version==="string" && isPinnedToMajorMinor(version)) {
                 pinnedCount++;
             }
         }
