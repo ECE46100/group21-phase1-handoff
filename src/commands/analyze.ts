@@ -61,6 +61,6 @@ export const analyze = async (packageURL: string) => {
     // console.log(output);
     const ndjsonOutput = JSON.stringify(output);
     
-    console.log(ndjsonOutput);
-    // return ndjsonOutput;
+    // console.log(ndjsonOutput);
+    return ndjsonOutput;
 };

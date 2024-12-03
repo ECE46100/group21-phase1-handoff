@@ -19,6 +19,6 @@ program
 program
     .argument("<packageURL>", 'URL of the package on GitHub.')
     .description("Return the security metrics of the package from the provided URL on GitHub.")
-    .action(analyze);
+    // .action(analyze);
 
 export { program };
