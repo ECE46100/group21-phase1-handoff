@@ -42,7 +42,7 @@ export class URLHandler {
 
     async GitHubHandler(url: string) {
         const { owner, repo } = this.extractOwnerRepo(url);
-        await cloneRepo(url, join(__dirname, '..', '..', 'repo'));
+        await cloneRepo(`https://github.com/${owner}/${repo}`, join(__dirname, '..', '..', 'repo'));
         let logLatencyStartNet = performance.now();
         let logLatencyStart = performance.now();
         const busFactor = await getBusFactor(owner, repo);
@@ -129,13 +129,16 @@ export class URLHandler {
     }
 
     extractOwnerRepo(url: string) {
-        const regex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)/;
+        // const regex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)/;
+        url = url.replace('git://', 'https://');
+        console.log(url);
+        const regex = /(?:git\+)?https?:\/\/(?:[\w\-\.]+@)?github\.com\/([^\/]+)\/([^\/]+)(?:\.git)?/;
         const match = url.match(regex);
         if (!match) {
             throw new Error("Invalid URL");
         }
         const owner = match[1];
-        const repo = match[2];
+        const repo = match[2].split('.')[0];
         return { owner, repo };
     }
 

@@ -25,7 +25,11 @@ export async function getRepoLicense(owner: string, repo: string): Promise<numbe
       return licenseHelper(owner, repo);
     }
   } catch (error) {
-    return licenseHelper(owner, repo);
+    try {
+      return licenseHelper(owner, repo);
+    } catch {
+      return 0;
+    }
   }
 }
 
@@ -44,7 +48,7 @@ async function licenseHelper(owner: string, repo: string): Promise<number> {
     const result = Buffer.from(response.data.content, 'base64').toString();
     if (location === 'package.json') {
       const json_result = JSON.parse(result);
-      if (json_result.license == "MIT" || json_result.license == "LGPL-2.1" || json_result.license == "LGPL-2.1-only") {
+      if (json_result.license.includes("MIT") || json_result.license.includes("LGPL-2.1") || json_result.license.includes("LGPL-2.1-only")) {
         return 1;
       }
     } else {
