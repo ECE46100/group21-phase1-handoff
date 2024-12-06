@@ -38,23 +38,22 @@ export const analyze = async (packageURL: string) => {
     // console.log(`==================================================\n`);
 
     const output = {
-        URL: packageURL,
         NetScore: parseFloat(outMetrics.netScore),
-        NetScore_Latency: outMetrics.netScoreLatency,
+        NetScoreLatency: outMetrics.netScoreLatency,
         RampUp: parseFloat(outMetrics.rampUpTime),
-        RampUp_Latency: outMetrics.rampUpTimeLatency,
+        RampUpLatency: outMetrics.rampUpTimeLatency,
         Correctness: parseFloat(outMetrics.correctness),
-        Correctness_Latency: outMetrics.correctnessLatency,
+        CorrectnessLatency: outMetrics.correctnessLatency,
         BusFactor: parseFloat(outMetrics.busFactor),
-        BusFactor_Latency: outMetrics.busFactorLatency,
+        BusFactorLatency: outMetrics.busFactorLatency,
         ResponsiveMaintainer: parseFloat(outMetrics.responsiveness),
-        ResponsiveMaintainer_Latency: outMetrics.responsivenessLatency,
-        ReviewedMerge: parseFloat(outMetrics.reviewedMerge),
-        ReviewedMerge_Latency: outMetrics.reviewedMergeLatency,
-        PinnedDependencies: parseFloat(outMetrics.pinnedDependencies),
-        PinnedDependencies_Latency: outMetrics.pinnedDependenciesLatency,
+        ResponsiveMaintainerLatency: outMetrics.responsivenessLatency,
+        PullRequest: parseFloat(outMetrics.reviewedMerge),
+        PullRequestLatency: outMetrics.reviewedMergeLatency,
+        GoodPinningPractices: parseFloat(outMetrics.pinnedDependencies),
+        GoodPinningPracticesLatency: outMetrics.pinnedDependenciesLatency,
         License: outMetrics.license,
-        License_Latency: outMetrics.licenseLatency
+        LicenseLatency: outMetrics.licenseLatency
     }
 
     // const ndjsonOutput = formattedOutput.map(metric => JSON.stringify(metric)).join(',');
