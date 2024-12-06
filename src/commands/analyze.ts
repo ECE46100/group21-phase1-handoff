@@ -52,8 +52,8 @@ export const analyze = async (packageURL: string) => {
         PullRequestLatency: outMetrics.reviewedMergeLatency,
         GoodPinningPractices: parseFloat(outMetrics.pinnedDependencies),
         GoodPinningPracticesLatency: outMetrics.pinnedDependenciesLatency,
-        License: outMetrics.license,
-        LicenseLatency: outMetrics.licenseLatency
+        LicenseScore: outMetrics.license,
+        LicenseScoreLatency: outMetrics.licenseLatency
     }
 
     // const ndjsonOutput = formattedOutput.map(metric => JSON.stringify(metric)).join(',');
