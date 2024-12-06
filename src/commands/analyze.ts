@@ -50,8 +50,8 @@ export const analyze = async (packageURL: string) => {
         ResponsiveMaintainerLatency: outMetrics.responsivenessLatency,
         PullRequest: parseFloat(outMetrics.reviewedMerge),
         PullRequestLatency: outMetrics.reviewedMergeLatency,
-        GoodPinningPractices: parseFloat(outMetrics.pinnedDependencies),
-        GoodPinningPracticesLatency: outMetrics.pinnedDependenciesLatency,
+        GoodPinningPractice: parseFloat(outMetrics.pinnedDependencies),
+        GoodPinningPracticeLatency: outMetrics.pinnedDependenciesLatency,
         LicenseScore: outMetrics.license,
         LicenseScoreLatency: outMetrics.licenseLatency
     }
