@@ -71,8 +71,16 @@ export class URLHandler {
         logLatencyStart = performance.now();
         const pinnedDependencies = await getPinnedDependencies(owner, repo);
         const pinnedDependenciesLatency = await getLatency(logLatencyStart, performance.now());
-
-        const netScore = (license * (0.125 * parseFloat(busFactor) + 0.5 * parseFloat(correctness) + 0.125 * parseFloat(rampUpTime) + 0.25 * parseFloat(responsiveness))).toFixed(3);
+        const netScoreComponents = [
+            parseFloat(busFactor) * 0.20,
+            license * 0.25,
+            parseFloat(responsiveness) * 0.15,
+            parseFloat(correctness) * 0.1,
+            parseFloat(rampUpTime) * 0.15,
+            parseFloat(reviewedMerge) * 0.1,
+            parseFloat(pinnedDependencies) * 0.05
+        ]
+        const netScore = netScoreComponents.reduce((a, b) => a + b, 0).toFixed(3);
         const netScoreLatency = await getLatency(logLatencyStartNet, performance.now());
 
         deleteRepo(join(__dirname, '..', '..', 'repo'));

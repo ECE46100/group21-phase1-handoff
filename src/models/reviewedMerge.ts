@@ -58,6 +58,6 @@ export async function getReviewedMerge(owner: string, repo: string): Promise<str
     }
 
     /* calculate the fraction of reviewed merges */
-    const fractionReviewed = totalMergedPRs > 0 ? reviewedCount / totalMergedPRs : 0;
+    const fractionReviewed = totalMergedPRs > 0 ? Math.min(reviewedCount / totalMergedPRs * 5, 1) : 0;
     return fractionReviewed.toFixed(3);
 }
